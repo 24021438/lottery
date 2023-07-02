@@ -1,11 +1,17 @@
 # Use the official Node.js 16 image as base image
 FROM node:16.14.0-buster
 
+# 替换系统源为清华大学源
+RUN sed -i 's/deb.debian.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apt/sources.list
+
 # 使用清华大学的 npm 镜像源
 RUN npm config set registry https://registry.npm.taobao.org
 
 # Upgrade npm to the latest version
 RUN npm install -g npm@9.6.2
+
+# 安装 nano 和 tree 工具
+RUN apt-get update && apt-get install -y nano tree
 
 # Set the author of the Dockerfile
 LABEL maintainer="YIN"
