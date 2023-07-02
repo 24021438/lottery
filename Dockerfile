@@ -1,14 +1,20 @@
 # Use the official Node.js 16 image as base image
 FROM node:16.14.0-buster
 
+# 使用清华大学的 npm 镜像源
+RUN npm config set registry https://registry.npm.taobao.org
+
 # Upgrade npm to the latest version
 RUN npm install -g npm@9.6.2
 
 # Set the author of the Dockerfile
 LABEL maintainer="YIN"
 
-# Add the application source code to the container
-ADD lottery.tar.gz  /
+# Copy the server directory to the container
+COPY server /lottery/server
+
+# Copy the product directory to the container
+COPY product /lottery/product
 
 # Set the working directory to the root directory of the application
 WORKDIR /lottery
@@ -30,4 +36,4 @@ EXPOSE 8080
 WORKDIR /lottery/product
 
 # Start the server
-CMD ["npm", "run", "serve"]
+CMD ["npm", "start"]
